@@ -1,16 +1,155 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>OTP Verification</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f9f9f9;
+    }
+
+    .container {
+      background: white;
+      padding: 40px 50px;
+      border-radius: 12px;
+      border: 2px solid #000;
+      width: 500px;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #verification_subtext {
+      color: #555;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .code-container {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .code {
+      width: 55px;
+      height: 65px;
+      font-size: 32px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .code:focus {
+      border: 2px solid #000;
+    }
+
+    .note {
+      background: #eee;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #777;
+    }
+  </style>
 </head>
 
 <body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
-</script>
+
+  <div class="container">
+
+    <!-- Heading -->
+    <h1 id="verification_heading">Verify Your Account</h1>
+
+    <!-- Subheading -->
+    <p id="verification_subtext">
+      We emailed you a six digit code. Enter it below to confirm your email address.
+    </p>
+
+    <!-- OTP Inputs -->
+    <div class="code-container">
+
+      <input type="text" maxlength="1" class="code" />
+      <input type="text" maxlength="1" class="code" />
+      <input type="text" maxlength="1" class="code" />
+      <input type="text" maxlength="1" class="code" />
+      <input type="text" maxlength="1" class="code" />
+      <input type="text" maxlength="1" class="code" />
+
+    </div>
+
+    <div class="note">
+      This is design only. We didn't actually send you an email.
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const inputs = document.querySelectorAll(".code");
+
+    // Focus first input on load
+    inputs[0].focus();
+
+    inputs.forEach((input, index) => {
+
+      // Allow only numbers
+      input.addEventListener("input", (e) => {
+
+        const value = e.target.value;
+
+        // Remove non-numbers
+        if (isNaN(value)) {
+          input.value = "";
+          return;
+        }
+
+        // Move forward
+        if (value && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+      });
+
+
+      // Handle Backspace
+      input.addEventListener("keydown", (e) => {
+
+        if (e.key === "Backspace") {
+
+          // If current box is empty → move back
+          if (input.value === "" && index > 0) {
+            inputs[index - 1].focus();
+            inputs[index - 1].value = "";
+          }
+
+          // If current box has value → clear it
+          else {
+            input.value = "";
+          }
+        }
+
+      });
+
+    });
+
+  </script>
 
 </body>
-
 </html>
