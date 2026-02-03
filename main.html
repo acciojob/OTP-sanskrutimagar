@@ -5,6 +5,7 @@
   <title>OTP Verification</title>
 
   <style>
+
     * {
       box-sizing: border-box;
       font-family: Arial, sans-serif;
@@ -53,11 +54,10 @@
       border: 1px solid #ddd;
       border-radius: 6px;
       outline: none;
-      transition: border 0.2s;
     }
 
     .code:focus {
-      border: 2px solid #000;
+      border: 2px solid black;
     }
 
     .note {
@@ -67,89 +67,92 @@
       font-size: 13px;
       color: #777;
     }
+
   </style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <!-- Heading -->
-    <h1 id="verification_heading">Verify Your Account</h1>
+  <!-- Heading -->
+  <h1 id="verification_heading">Verify Your Account</h1>
 
-    <!-- Subheading -->
-    <p id="verification_subtext">
-      We emailed you a six digit code. Enter it below to confirm your email address.
-    </p>
+  <!-- Subheading -->
+  <p id="verification_subtext">
+    We emailed you a six digit code. Enter it below to confirm your email address.
+  </p>
 
-    <!-- OTP Inputs -->
-    <div class="code-container">
+  <!-- OTP Inputs -->
+  <div class="code-container">
 
-      <input type="text" maxlength="1" class="code" />
-      <input type="text" maxlength="1" class="code" />
-      <input type="text" maxlength="1" class="code" />
-      <input type="text" maxlength="1" class="code" />
-      <input type="text" maxlength="1" class="code" />
-      <input type="text" maxlength="1" class="code" />
-
-    </div>
-
-    <div class="note">
-      This is design only. We didn't actually send you an email.
-    </div>
+    <input id="code-1" class="code" type="text" maxlength="1" />
+    <input id="code-2" class="code" type="text" maxlength="1" />
+    <input id="code-3" class="code" type="text" maxlength="1" />
+    <input id="code-4" class="code" type="text" maxlength="1" />
+    <input id="code-5" class="code" type="text" maxlength="1" />
+    <input id="code-6" class="code" type="text" maxlength="1" />
 
   </div>
 
+  <div class="note">
+    This is design only. We didn't actually send you an email.
+  </div>
 
-  <script>
+</div>
 
-    const inputs = document.querySelectorAll(".code");
 
-    // Focus first input on load
+<script>
+
+  const inputs = document.querySelectorAll(".code");
+
+  // ✅ Focus first input on load (IMPORTANT FOR TEST)
+  window.addEventListener("load", () => {
     inputs[0].focus();
-
-    inputs.forEach((input, index) => {
-
-      // Allow only numbers
-      input.addEventListener("input", (e) => {
-
-        const value = e.target.value;
-
-        // Remove non-numbers
-        if (isNaN(value)) {
-          input.value = "";
-          return;
-        }
-
-        // Move forward
-        if (value && index < inputs.length - 1) {
-          inputs[index + 1].focus();
-        }
-      });
+  });
 
 
-      // Handle Backspace
-      input.addEventListener("keydown", (e) => {
+  inputs.forEach((input, index) => {
 
-        if (e.key === "Backspace") {
+    // ✅ Forward typing
+    input.addEventListener("input", (e) => {
 
-          // If current box is empty → move back
-          if (input.value === "" && index > 0) {
-            inputs[index - 1].focus();
-            inputs[index - 1].value = "";
-          }
+      // Only allow numbers
+      if (isNaN(e.target.value)) {
+        input.value = "";
+        return;
+      }
 
-          // If current box has value → clear it
-          else {
-            input.value = "";
-          }
-        }
-
-      });
+      // Move to next box
+      if (input.value !== "" && index < inputs.length - 1) {
+        inputs[index + 1].focus();
+      }
 
     });
 
-  </script>
+
+    // ✅ Backspace behavior
+    input.addEventListener("keydown", (e) => {
+
+      if (e.key === "Backspace") {
+
+        // If empty → move back
+        if (input.value === "" && index > 0) {
+          inputs[index - 1].focus();
+          inputs[index - 1].value = "";
+        }
+
+        // If has value → clear only
+        else {
+          input.value = "";
+        }
+      }
+
+    });
+
+  });
+
+</script>
 
 </body>
 </html>
